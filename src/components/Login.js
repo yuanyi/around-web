@@ -8,7 +8,7 @@ import {API_ROOT} from "../constants"
 
 
 
-const NormalLoginForm = () => {
+const NormalLoginForm = (props) => {
     const onFinish = values => {
         let lastResponse;
         console.log('Received values of form: ', values);
@@ -21,13 +21,14 @@ const NormalLoginForm = () => {
             }),
         }).then((response) => {
             lastResponse = response;
+            console.log("time not out");
             return response.text();
         }, (error) => {
             console.log('Error');
         }).then((text) => {
             if (lastResponse.ok) {
                 message.success('login success');
-                this.props.handleLogin(text);
+                props.handleLogin(text);
             } else {
                 message.error(text);
             }
