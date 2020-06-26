@@ -20,6 +20,7 @@ export class Gallery extends Component {
  render() {
    const images = this.props.images.map((image) => {
      return {
+       //terms javascript "spread"
        ...image,
        customOverlay: (
          // <div style={captionStyle}>

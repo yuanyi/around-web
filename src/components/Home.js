@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tabs, Button, Spin } from 'antd';
 import { Gallery } from './Gallery';
+import { CreatePostButton } from "./CreatePostButton"
 import {
     GEOLOCATION_OPTIONS,
     POSITION_KEY,
@@ -151,7 +152,8 @@ export class Home extends React.Component {
         this.getGeolocation();
     }
     render() {
-        const operations = <Button>Create New Post</Button>;
+        const operations = <CreatePostButton />;
+        // const operations = <Button>Create New Post</Button>;
         return (
             <Tabs tabBarExtraContent={operations} className="main-tabs">
                 <TabPane tab="Image Posts" key="1">
