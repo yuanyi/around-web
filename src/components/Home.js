@@ -1,5 +1,6 @@
 import React from 'react';
-import { Tabs, Button } from 'antd';
+import { Tabs, Button, Spin } from 'antd';
+import { Gallery } from './Gallery';
 import {
     GEOLOCATION_OPTIONS,
     POSITION_KEY,
@@ -44,6 +45,7 @@ export class Home extends React.Component {
             errorMessage: null,
         })
         console.log(position);
+        //terminology: object destructuring
         const { latitude, longitude } = position.coords;
         localStorage.setItem(POSITION_KEY, JSON.stringify({ latitude, longitude }));
         this.loadNearbyPost();
@@ -56,15 +58,16 @@ export class Home extends React.Component {
         })
     }
 
-    loadNearbyPost(
-        position = JSON.parse(localStorage.getItem(POSITION_KEY)),
-        range = 20,
-    ) {
+    loadNearbyPost() {
         this.setState({
             loadingPosts: true,
-            error: null,
+            errorMessage: null,
         });
+
+        const position = JSON.parse(localStorage.getItem(POSITION_KEY));
+        const range = 200;
         const token = localStorage.getItem(TOKEN_KEY);
+
         fetch(`${API_ROOT}/search?lat=${position.latitude}&lon=${position.longitude}&range=${range}`, {
             method: 'GET',
             headers: {
@@ -84,10 +87,65 @@ export class Home extends React.Component {
         }).catch((error) => {
             this.setState({
                 loadingPosts: false,
-                error: error.message,
+                errorMessage: error.message,
             });
         });
     }
+
+    // getImagePosts() {
+    //   if (this.state.errorMessage) {
+    //     return <div>{errorMessage}</div>
+    //    } else if(isLoadingGeoLocation) {
+    //      return <Spin tip="Loading geo location..."/>
+    //    } else if (isLoadingPosts) {
+    //      return <Spin tip="Loading posts..." />
+    //    } else if (posts.length > 0) {
+    //      const images = this.state.posts.map((post) => {
+    //        return {
+    //          user: post.user,
+    //          src: post.url,
+    //          thumbnail: post.url,
+    //          caption: post.message,
+    //          thumbnailWidth: 400,
+    //          thumbnailHeight: 300,
+    //        }
+    //      });
+    //
+    //      return (<Gallery images={images}/>);
+    //    } else {
+    //      return 'No nearby posts.';
+    //    }
+    //  }
+
+
+
+
+    getImagePosts = () => {
+      const { error, isLoadingGeoLocation, isLoadingPosts, posts } = this.state;
+      if (error) {
+         return <div>{error}</div>
+       } else if(isLoadingGeoLocation) {
+         return <Spin tip="Loading geo location..."/>
+       } else if (isLoadingPosts) {
+         return <Spin tip="Loading posts..." />
+       } else if (posts.length > 0) {
+         const images = this.state.posts.map((post) => {
+           return {
+             user: post.user,
+             src: post.url,
+             thumbnail: post.url,
+             caption: post.message,
+             thumbnailWidth: 400,
+             thumbnailHeight: 300,
+           }
+         });
+
+         return (<Gallery images={images}/>);
+       } else {
+         return 'No nearby posts.';
+       }
+     }
+
 
     componentDidMount() {
         this.getGeolocation();
@@ -96,8 +154,8 @@ export class Home extends React.Component {
         const operations = <Button>Create New Post</Button>;
         return (
             <Tabs tabBarExtraContent={operations} className="main-tabs">
-                <TabPane tab="Tab 1" key="1">
-                    Content of tab 1
+                <TabPane tab="Image Posts" key="1">
+                    {this.getImagePosts()}
                 </TabPane>
                 <TabPane tab="Tab 2" key="2">
                     Content of tab 2
