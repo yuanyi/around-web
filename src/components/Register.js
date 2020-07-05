@@ -18,6 +18,8 @@ import {
 } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
+
+
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
 
@@ -39,6 +41,7 @@ const formItemLayout = {
         },
     },
 };
+
 const tailFormItemLayout = {
     wrapperCol: {
         xs: {
@@ -51,6 +54,8 @@ const tailFormItemLayout = {
         },
     },
 };
+
+
 
 const RegistrationForm = () => {
     const [form] = Form.useForm();

@@ -66,7 +66,7 @@ export class Home extends React.Component {
         });
 
         const position = JSON.parse(localStorage.getItem(POSITION_KEY));
-        const range = 200;
+        const range = 2000;
         const token = localStorage.getItem(TOKEN_KEY);
 
 
@@ -92,13 +92,14 @@ export class Home extends React.Component {
                 errorMessage: error.message,
             });
         });
-        
+
     }
 
 
 
     getImagePosts = () => {
       const { error, isLoadingGeoLocation, isLoadingPosts, posts } = this.state;
+      // console.log("getImagePosts starts");
       if (error) {
          return <div>{error}</div>
        } else if(isLoadingGeoLocation) {
@@ -121,11 +122,18 @@ export class Home extends React.Component {
        } else {
          return 'No nearby posts.';
        }
+       // console.log("getImagePosts ends");
      }
 
 
     componentDidMount() {
+      console.log("componentDidMount");
+      if (this.state.dataWasFetched) {
+        console.log("getGeolocation before");
         this.getGeolocation();
+        console.log("getGeolocation after");
+      }
+      // this.getGeolocation();
     }
     render() {
         const operations = <CreatePostButton />;

@@ -46,13 +46,19 @@ import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
               <Form.Item
                   name="Message"
                   label="Message"
-
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please input your message!',
+                    },
+                  ]}
               >
                   <Input />
               </Form.Item>
 
               <Form.Item
-                label="Image"
+                // name="ImageLabel"
+                label="ImageLabel"
                 >
                 <Form.Item name="Image" valuePropName="fileList" getValueFromEvent={normFile} noStyle
                 rules={[
@@ -62,7 +68,7 @@ import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
                   },
                 ]}
                 >
-                  <Upload.Dragger name="files" action="/upload.do">
+                  <Upload.Dragger name="files">
                     <p className="ant-upload-drag-icon">
                       <InboxOutlined />
                     </p>
