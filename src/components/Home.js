@@ -128,12 +128,14 @@ export class Home extends React.Component {
 
     componentDidMount() {
       console.log("componentDidMount");
+      /*
       if (this.state.dataWasFetched) {
         console.log("getGeolocation before");
         this.getGeolocation();
         console.log("getGeolocation after");
       }
-      // this.getGeolocation();
+      */
+      this.getGeolocation();
     }
     render() {
         const operations = <CreatePostButton />;

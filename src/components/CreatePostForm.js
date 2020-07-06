@@ -27,7 +27,7 @@ import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
     return e && e.fileList;
   };
 
-  const NormalCreatePostForm = () => {
+  const NormalCreatePostForm = React.forwardRef((props, ref) => {
       const [form] = Form.useForm();
 
       const onFinish = values => {
@@ -36,6 +36,7 @@ import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
 
       return (
           <Form
+              ref={ref}
               {...formItemLayout}
               form={form}
               name="Upload"
@@ -81,7 +82,7 @@ import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
 
           </Form>
       );
-  };
+  });
 // }
 
 

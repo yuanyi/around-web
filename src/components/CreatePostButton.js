@@ -4,7 +4,6 @@ import { CreatePostForm } from './CreatePostForm';
 
 export class CreatePostButton extends React.Component {
   state = {
-    ModalText: 'Content of the modal',
     visible: false,
     confirmLoading: false,
   };
@@ -17,19 +16,49 @@ export class CreatePostButton extends React.Component {
 
   handleOk = () => {
     this.setState({
-      ModalText: 'The modal will be closed after two seconds',
-      confirmLoading: true,
+        confirmLoading: true,
     });
 
+    this.form.validateFields()
+    .then(values => {
+      console.log('Received values of form ', values);
 
-
-    setTimeout(() => {
+      setTimeout(() => {
+        this.setState({
+          visible: false,
+          confirmLoading: false,
+        });
+      }, 2000);
+    })
+    .catch(errorInfo => {
+      console.log('Some infomration missing in the form');
       this.setState({
-        visible: false,
-        confirmLoading: false,
+        confirmLoading: true,
       });
-    }, 2000);
+    })
+
   };
+
+/*
+  handleOk = () => {
+
+    if (!err) {
+      console.log('Received values of form ', values);
+
+      setTimeout(() => {
+        this.setState({
+          visible: false,
+          confirmLoading: false,
+        });
+      }, 2000);
+    } else {
+      this.setState({
+        confirmLoading: true,
+      });
+    }
+
+  };
+*/
 
   handleCancel = () => {
     console.log('Clicked cancel button');
@@ -43,7 +72,7 @@ export class CreatePostButton extends React.Component {
   }
 
   render() {
-    const { visible, confirmLoading, ModalText } = this.state;
+    const { visible, confirmLoading } = this.state;
     return (
       <div>
         <Button type="primary" onClick={this.showModal}>
