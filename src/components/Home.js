@@ -59,16 +59,16 @@ export class Home extends React.Component {
         })
     }
 
-    loadNearbyPost() {
+    loadNearbyPost = (
+      position = JSON.parse(localStorage.getItem(POSITION_KEY)),
+      range = 20,
+    ) => {
         this.setState({
             loadingPosts: true,
             errorMessage: null,
         });
 
-        const position = JSON.parse(localStorage.getItem(POSITION_KEY));
-        const range = 2000;
         const token = localStorage.getItem(TOKEN_KEY);
-
 
         fetch(`${API_ROOT}/search?lat=${position.latitude}&lon=${position.longitude}&range=${range}`, {
             method: 'GET',
@@ -138,7 +138,7 @@ export class Home extends React.Component {
       this.getGeolocation();
     }
     render() {
-        const operations = <CreatePostButton />;
+        const operations = <CreatePostButton onSuccess={this.loadNearbyPost}/>;
         // const operations = <Button>Create New Post</Button>;
         return (
             <Tabs tabBarExtraContent={operations} className="main-tabs">

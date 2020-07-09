@@ -69,7 +69,7 @@ import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
                   },
                 ]}
                 >
-                  <Upload.Dragger name="files">
+                  <Upload.Dragger name="files" beforeUpload={() => false}>
                     <p className="ant-upload-drag-icon">
                       <InboxOutlined />
                     </p>
