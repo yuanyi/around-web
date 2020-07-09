@@ -8,6 +8,8 @@ import {
     TOKEN_KEY,
     API_ROOT,
     AUTH_HEADER,
+    POST_TYPE_IMAGE,
+    POST_TYPE_VIDEO,
 } from '../constants';
 import '../styles/Home.css';
 
@@ -95,9 +97,7 @@ export class Home extends React.Component {
 
     }
 
-
-
-    getImagePosts = () => {
+    getPosts(type) {
       const { error, isLoadingGeoLocation, isLoadingPosts, posts } = this.state;
       // console.log("getImagePosts starts");
       if (error) {
@@ -107,23 +107,51 @@ export class Home extends React.Component {
        } else if (isLoadingPosts) {
          return <Spin tip="Loading posts..." />
        } else if (posts.length > 0) {
-         const images = this.state.posts.map((post) => {
-           return {
-             user: post.user,
-             src: post.url,
-             thumbnail: post.url,
-             caption: post.message,
-             thumbnailWidth: 400,
-             thumbnailHeight: 300,
-           }
-         });
-
-         return (<Gallery images={images}/>);
+         switch (type) {
+           case POST_TYPE_IMAGE:
+           return this.getImagePosts();
+           case POST_TYPE_VIDEO:
+           return this.getVideoPosts();
+           default:
+           throw new Error('unknown post type');
+         }
        } else {
          return 'No nearby posts.';
        }
-       // console.log("getImagePosts ends");
+    }
+
+    getImagePosts = () => {
+      const images = this.state.posts
+      .filter((post) => post.type === POST_TYPE_IMAGE)
+      .map((post) => {
+        return {
+          user: post.user,
+          src: post.url,
+          thumbnail: post.url,
+          caption: post.message,
+          thumbnailWidth: 400,
+          thumbnailHeight: 300,
+        }
+      });
+
+      return (<Gallery images={images}/>);
      }
+
+     getVideoPosts = () => {
+       const { posts } = this.state;
+       <Row gutter={32}>
+        {
+          posts
+            .filter((post) => [POST_TYPE_VIDEO, POST_TYPE_UNKNOWN].includes(post.type))
+            .map((post) => (
+              <Col span={6} key={post.url}>
+                <video src={post.url} controls={true} className="video-block"/>
+                <p>{post.user}: {post.message}</p>
+              </Col>
+            ))
+        }
+      </Row>
+      }
 
 
     componentDidMount() {
@@ -143,10 +171,10 @@ export class Home extends React.Component {
         return (
             <Tabs tabBarExtraContent={operations} className="main-tabs">
                 <TabPane tab="Image Posts" key="1">
-                    {this.getImagePosts()}
+                    {this.getPosts(POST_TYPE_IMAGE)}
                 </TabPane>
-                <TabPane tab="Tab 2" key="2">
-                    Content of tab 2
+                <TabPane tab="Video Posts" key="2">
+                    {this.getPosts(POST_TYPE_VIDEO)}
                 </TabPane>
                 <TabPane tab="Tab 3" key="3">
                     Content of tab 3

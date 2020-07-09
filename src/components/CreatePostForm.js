@@ -59,7 +59,7 @@ import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
 
               <Form.Item
                 // name="ImageLabel"
-                label="ImageLabel"
+                label="Image/Video"
                 >
                 <Form.Item name="Image" valuePropName="fileList" getValueFromEvent={normFile} noStyle
                 rules={[
