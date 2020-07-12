@@ -14,3 +14,4 @@ export const GEOLOCATION_OPTIONS = {
 export const POSITION_NOISE = 0.02;
 export const POST_TYPE_IMAGE = 'image';
 export const POST_TYPE_VIDEO = 'video';
+export const POST_TYPE_UNKNOWN = 'unknown';
